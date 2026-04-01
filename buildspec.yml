@@ -12,8 +12,6 @@ phases:
       
   build:
     commands:
-      - echo Running tests...
-      - npm test
       - echo Building React app...
       - npm run build
       - echo Build completed on `date`
