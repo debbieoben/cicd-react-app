@@ -1,14 +1,15 @@
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import App from './App';
 
-test('renders CI/CD Pipeline heading', () => {
+test('renders Advanced CI/CD Pipeline text', () => {
   render(<App />);
-  const headingElement = screen.getByText(/Advanced CI\/CD Pipeline/i);
-  expect(headingElement).toBeInTheDocument();
+  const element = screen.getByText(/Advanced CI\/CD Pipeline/i);
+  expect(element).toBeInTheDocument();
 });
 
-test('renders deployment successful message', () => {
+test('renders Deployment Successful text', () => {
   render(<App />);
-  const successElement = screen.getByText(/Deployment Successful/i);
-  expect(successElement).toBeInTheDocument();
+  const element = screen.getByText(/Deployment Successful/i);
+  expect(element).toBeInTheDocument();
 });
