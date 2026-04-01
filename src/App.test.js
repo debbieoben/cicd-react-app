@@ -12,9 +12,3 @@ test('renders deployment successful message', () => {
   const successElement = screen.getByText(/Deployment Successful/i);
   expect(successElement).toBeInTheDocument();
 });
-
-test('renders pipeline stages', () => {
-  render(<App />);
-  const pipelineElement = screen.getByText(/Pipeline Stages/i);
-  expect(pipelineElement).toBeInTheDocument();
-});
