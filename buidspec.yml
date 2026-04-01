@@ -1,40 +1,52 @@
 version: 0.2
 
+env:
+  variables:
+    NODE_ENV: "production"
+
 phases:
   pre_build:
     commands:
       - echo Installing dependencies...
       - npm install
+      - echo Running security audit...
+      - npm audit --audit-level=high || true
       
   build:
     commands:
+      - echo Running tests...
+      - npm test -- --coverage --watchAll=false
       - echo Building React app...
       - npm run build
       - echo Build completed on `date`
-      - echo Creating build info...
-      - echo "{\"buildTime\":\"$(date)\",\"commitHash\":\"$CODEBUILD_RESOLVED_SOURCE_VERSION\"}" > build/build-info.json
       
   post_build:
     commands:
-      - echo Build artifacts ready
+      - echo Listing build output...
       - ls -la build/
+      - echo Generating build metadata...
+      - |
+        cat > build/build-info.json << EOF
+        {
+          "buildTime": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+          "commitHash": "$CODEBUILD_RESOLVED_SOURCE_VERSION",
+          "buildNumber": "$CODEBUILD_BUILD_NUMBER",
+          "buildId": "$CODEBUILD_BUILD_ID"
+        }
+        EOF
+      - cat build/build-info.json
 
 artifacts:
   files:
     - '**/*'
   base-directory: build
-
+  
 cache:
   paths:
     - 'node_modules/**/*'
-```
 
----
-
-### **FILE 7: .gitignore**
-```
-node_modules/
-build/
-.DS_Store
-.env
-npm-debug.log
+reports:
+  jest_reports:
+    files:
+      - 'coverage/clover.xml'
+    file-format: 'CLOVERXML'
