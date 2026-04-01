@@ -1,0 +1,40 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Installing dependencies...
+      - npm install
+      
+  build:
+    commands:
+      - echo Building React app...
+      - npm run build
+      - echo Build completed on `date`
+      - echo Creating build info...
+      - echo "{\"buildTime\":\"$(date)\",\"commitHash\":\"$CODEBUILD_RESOLVED_SOURCE_VERSION\"}" > build/build-info.json
+      
+  post_build:
+    commands:
+      - echo Build artifacts ready
+      - ls -la build/
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: build
+
+cache:
+  paths:
+    - 'node_modules/**/*'
+```
+
+---
+
+### **FILE 7: .gitignore**
+```
+node_modules/
+build/
+.DS_Store
+.env
+npm-debug.log
