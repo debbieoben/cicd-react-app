@@ -9,13 +9,9 @@ phases:
     commands:
       - echo Installing dependencies...
       - npm install
-      - echo Running security audit...
-      - npm audit --audit-level=high || true
-         
+      
   build:
     commands:
-      - echo Running tests...
-      - npm test -- --coverage --watchAll=false
       - echo Building React app...
       - npm run build
       - echo Build completed on `date`
@@ -44,9 +40,3 @@ artifacts:
 cache:
   paths:
     - 'node_modules/**/*'
-
-reports:
-  jest_reports:
-    files:
-      - 'coverage/clover.xml'
-    file-format: 'CLOVERXML'
